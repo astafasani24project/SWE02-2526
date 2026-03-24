@@ -58,7 +58,35 @@
         </div>
     </div>
 
-    <script src="scripts/index.js"></script>
+    <script src="scripts/index.js"
+        const tableBody = document.getElementById('tableBody');
+
+
+function renderTable(students) {
+    tableBody.innerHTML = ""; 
+
+    students.forEach(student => {
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td>${student.id}</td>
+            <td>${student.math}</td>
+            <td>${student.english}</td>
+            <td>${student.science}</td>
+            <td>${student.average}</td>
+            <td>${student.status}</td>
+            <td>
+                <button class="btn btn-sm btn-warning me-2" onclick="editStudent('${student.id}')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteStudent('${student.id}', '${student.name}')">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);>
+    });
+}
+
+        
+    </script>
 
 </body>
 </html>
