@@ -1,32 +1,34 @@
-function saveStudentInfo(event){
+const API_BASE_URL = 'http://localhost:5290/Students';
 
-    event.preventDefault(); // Prevent form submission
+function generateStudentId() {
+    return Math.floor(Math.random() * 15000) + 1;
+}
 
-    let studentName = document.getElementById('studentName').value;
-    let studentID = document.getElementById('studentId').value;
-    let mathGrade = document.getElementById('mathGrade').value;
-    let englishGrade = document.getElementById('englishGrade').value;
-    let scienceGrade = document.getElementById('scienceGrade').value;
+async function saveStudentInfo(event) {
+    event.preventDefault();
 
-    console.log('Student Name:', studentName);
+    const newStudent = {
+        id: generateStudentId(),
+        name: $('#studentName').val(),
+        math: parseFloat($('#mathGrade').val()),
+        english: parseFloat($('#englishGrade').val()),
+        science: parseFloat($('#scienceGrade').val())
+    };
 
-    let newStudent = {
-        name: studentName,
-        id: studentID,
-        grades: {
-            math: mathGrade,
-            english: englishGrade,
-            science: scienceGrade
-        }
+    try {
+        const response = await fetch(`${API_BASE_URL}/AddNew`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newStudent)
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        console.log('New Student saved:', newStudent);
+        alert('Student information saved successfully!');
+        window.location.href = 'index.html';
+    } catch (error) {
+        console.error('Failed to save student:', error);
+        alert(`Failed to save student: ${error.message}`);
     }
-
-    let students = JSON.parse(localStorage.getItem('students')) || [];
-    students.push(newStudent);
-    localStorage.setItem('students', JSON.stringify(students));
-
-
-    console.log('New Student Object:', newStudent);
-
-    alert('Student information saved successfully!');
-
 }
